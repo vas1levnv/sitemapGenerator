@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    margin: 0 auto;
+    max-width: 1200px;
+    height: 100vh;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+
+}
+h1{
+    margin-bottom: 20px;
+}
+input{
+
+}
+
+#link{
+    margin-top: 20px;
+}
+
+#link a{
+    text-decoration: none;
+    color: black;
+    border: 2px solid black;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#link a:hover{
+   background-color: coral;
+}
