@@ -18,6 +18,7 @@ $(document).ready(function () {
             type: "GET",
             success: function (data) {
                 let link = 'https://api.sitemap-generator.ru/sitemap/' + data.sitemap
+                $("#link").empty();
                 $("#link").append("<a href=" + link + ">скачать файл</a>")
             }
         });
