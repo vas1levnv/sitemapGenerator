@@ -1,4 +1,12 @@
 $(document).ready(function () {
+    $("#origin").keyup(function () {
+        if ($("#origin").val()) {
+            $("#post").prop('disabled', false);
+        }
+        if ($("#origin").val() === '') {
+            $("#post").prop('disabled', true);
+        }
+    });
     function checkStatusId(id) {
         $.ajax({
             url: 'https://api.sitemap-generator.ru/task/stats/' + id,
@@ -12,12 +20,11 @@ $(document).ready(function () {
             }
         });
     }
-
     function getInfoFile(id) {
         $.ajax({
             url: 'https://api.sitemap-generator.ru/task/' + id,
             type: "GET",
-            success: function (data, textStatus, xhr) {
+            success: function (data) {
                 let link = 'https://api.sitemap-generator.ru/sitemap/' + data.sitemap
                 $("#link").empty();
                 $("#link").append("<a href=" + link + ">скачать файл</a>")
@@ -39,7 +46,7 @@ $(document).ready(function () {
             return regex.test(String(email).toLowerCase());
         }
 
-        if(!isEmail(ajaxData.email)){
+        if (!isEmail(ajaxData.email)) {
             alert('Введите валидный Email')
             return false
         }
@@ -47,8 +54,7 @@ $(document).ready(function () {
             url: 'https://api.sitemap-generator.ru/task',
             type: "post",
             data: ajaxData,
-            success: function (data, textStatus, xhr) {
-                console.log(xhr.status)
+            success: function (data) {
                 alert('данные приняты, задача №' + data.id)
                 checkStatusId(data.id)
                 getInfoFile(data.id)
