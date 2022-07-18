@@ -7,6 +7,7 @@ $(document).ready(function () {
             $("#post").prop('disabled', true);
         }
     });
+
     function checkStatusId(id) {
         $.ajax({
             url: 'https://api.sitemap-generator.ru/task/stats/' + id,
@@ -20,6 +21,7 @@ $(document).ready(function () {
             }
         });
     }
+
     function getInfoFile(id) {
         $.ajax({
             url: 'https://api.sitemap-generator.ru/task/' + id,
@@ -50,22 +52,51 @@ $(document).ready(function () {
             alert('Введите валидный Email')
             return false
         }
-        $.ajax({
-            url: 'https://api.sitemap-generator.ru/task',
-            type: "post",
-            data: ajaxData,
-            success: function (data) {
-                alert('данные приняты, задача №' + data.id)
-                checkStatusId(data.id)
+
+        const p = new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'https://api.sitemap-generator.ru/task',
+                type: "post",
+                data: ajaxData,
+                success: function (data) {
+                    alert('данные приняты, задача №' + data.id)
+                    resolve(data)
+                }
+            })
+        })
+        p.then(data => {
+            return new Promise((resolve, reject) => {
+                alert('Подождите ссылка на скачивание появится через 3 секунды')
+                setTimeout(() => {
+                    checkStatusId(data.id)
+                    resolve(data)
+                }, 3000)
+            }).then(data => {
                 getInfoFile(data.id)
                 $("#origin").val('')
-                $("#email").val('');
-            },
-            error: function () {
-                alert('Введите валидный сайт')
+                $("#email").val('')
 
-            }
-        });
+            })
+        })
+            .catch('Ошибка')
+
+
+        /*        $.ajax({
+                    url: 'https://api.sitemap-generator.ru/task',
+                    type: "post",
+                    data: ajaxData,
+                    success: function (data) {
+                        alert('данные приняты, задача №' + data.id)
+                        checkStatusId(data.id)
+                        getInfoFile(data.id)
+$("#origin").val('')
+$("#email").val('')
+                    },
+                    error: function () {
+                        alert('Введите валидный сайт')
+
+                    }
+                });*/
 
     })
 })
